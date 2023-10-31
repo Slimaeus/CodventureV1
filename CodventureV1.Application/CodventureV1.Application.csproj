@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Skills\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.8.0" />
+    <PackageReference Include="MediatR" Version="12.1.1" />
+    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="7.0.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.13" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CodventureV1.Domain\CodventureV1.Domain.csproj" />
+    <ProjectReference Include="..\CodventureV1.Persistence\CodventureV1.Persistence.csproj" />
+  </ItemGroup>
+
+</Project>
