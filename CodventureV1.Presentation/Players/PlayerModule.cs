@@ -4,6 +4,7 @@ using CodventureV1.Application.Players.Queries.GetPlayers;
 using CodventureV1.Domain.Common.Classes;
 using CodventureV1.Domain.Players;
 using CodventureV1.Domain.Results.Interfaces;
+using CodventureV1.Presentation.Common.Handlers;
 using CodventureV1.Presentation.Players.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -22,29 +23,15 @@ public sealed class PlayerModule : ICarterModule
         group.MapGet(PlayerRoutes.GetById, GetById);
     }
 
-    private static async Task<
-        Ok<IResult<IEnumerable<Player>>>>
+    private static async Task<Results<
+        Ok<IResult<IEnumerable<Player>>>,
+        BadRequest<ProblemDetails>>>
         Get(ISender sender, [AsParameters] Specification specification)
-    {
-        var result = await sender.Send(new GetPlayersQuery(specification));
-        return result.StatusCode switch
-        {
-            StatusCodes.Status200OK => TypedResults.Ok(result),
-            _ => throw new Exception()
-        };
-    }
+        => ResultHandlers.HandleGetResult(await sender.Send(new GetPlayersQuery(specification)));
 
     private static async Task<Results<
         Ok<IResult<Player>>,
-        NotFound<IDictionary<string, List<string>>>>>
+        NotFound<ProblemDetails>>>
         GetById(ISender sender, [FromRoute] Guid id)
-    {
-        var result = await sender.Send(new GetPlayerQuery(id));
-        return result.StatusCode switch
-        {
-            StatusCodes.Status200OK => TypedResults.Ok(result),
-            StatusCodes.Status404NotFound => TypedResults.NotFound(result.Errors),
-            _ => throw new Exception(),
-        };
-    }
+        => ResultHandlers.HandleGetByIdResult(await sender.Send(new GetPlayerQuery(id)));
 }
