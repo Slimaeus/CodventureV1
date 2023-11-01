@@ -1,8 +1,8 @@
 ﻿using Carter;
+using CodventureV1.Application.Players.Dtos;
 using CodventureV1.Application.Players.Queries.GetPlayer;
 using CodventureV1.Application.Players.Queries.GetPlayers;
 using CodventureV1.Domain.Common.Classes;
-using CodventureV1.Domain.Players;
 using CodventureV1.Domain.Results.Interfaces;
 using CodventureV1.Presentation.Common.Handlers;
 using CodventureV1.Presentation.Players.Constants;
@@ -24,13 +24,13 @@ public sealed class PlayerModule : ICarterModule
     }
 
     private static async Task<Results<
-        Ok<IResult<IEnumerable<Player>>>,
+        Ok<IResult<IEnumerable<PlayerDto>>>,
         BadRequest<ProblemDetails>>>
         Get(ISender sender, [AsParameters] Specification specification)
         => ResultHandlers.HandleGetResult(await sender.Send(new GetPlayersQuery(specification)));
 
     private static async Task<Results<
-        Ok<IResult<Player>>,
+        Ok<IResult<PlayerDto>>,
         NotFound<ProblemDetails>>>
         GetById(ISender sender, [FromRoute] Guid id)
         => ResultHandlers.HandleGetByIdResult(await sender.Send(new GetPlayerQuery(id)));

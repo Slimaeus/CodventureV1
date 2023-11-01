@@ -1,4 +1,6 @@
+using AutoMapper;
 using CodventureV1.Application.Common.Queries.GetWithPagination;
+using CodventureV1.Application.Players.Dtos;
 using CodventureV1.Domain.Common.Interfaces;
 using CodventureV1.Domain.Players;
 
@@ -19,11 +21,11 @@ namespace CodventureV1.Application.Players.Queries.GetPlayers;
 //    }
 //}
 
-public sealed record GetPlayersQuery(ISpecification Specification) : GetWithPaginationQuery<Player>(Specification);
+public sealed record GetPlayersQuery(ISpecification Specification) : GetWithPaginationQuery<PlayerDto>(Specification);
 
-public sealed class Handler : GetWithPaginationHandler<Guid, Player, GetPlayersQuery>
+public sealed class Handler : GetWithPaginationHandler<Guid, Player, GetPlayersQuery, PlayerDto>
 {
-    public Handler(IQueryRepositoryFactory queryRepositoryFactory) : base(queryRepositoryFactory)
+    public Handler(IQueryRepositoryFactory queryRepositoryFactory, IMapper mapper) : base(queryRepositoryFactory, mapper)
     {
     }
 }

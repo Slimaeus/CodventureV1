@@ -11,38 +11,25 @@ public class QueryRepository<TKey, TEntity> : IQueryRepository<TKey, TEntity> wh
     public QueryRepository(ApplicationDbContext applicationDbContext)
         => _applicationDbContext = applicationDbContext;
 
-    public async Task<IEnumerable<TEntity>> GetAsync(ISpecification specification)
+    public Task<IQueryable<TEntity>> GetAsync(ISpecification specification)
     {
-        if (specification is null || specification.PageSize <= 0)
-        {
-            var queryWithoutTakeSkip = EF.CompileAsyncQuery((ApplicationDbContext context)
-            => context.Set<TEntity>()
-            .AsNoTracking()
+        var query = _applicationDbContext.Set<TEntity>()
             .OrderBy(x => x.Id)
-            .AsQueryable());
+            .AsSplitQuery();
 
-            return await queryWithoutTakeSkip(_applicationDbContext).ToListAsync();
+        if (specification is not null && specification.PageSize > 0)
+        {
+            var takeCount = specification.PageSize;
+            var skip = (specification.PageIndex - 1) * specification.PageSize;
+            query = query
+                .Take(takeCount)
+                .Skip(skip);
         }
 
-        var takeCount = specification.PageSize;
-        var skip = (specification.PageIndex - 1) * specification.PageSize;
-        var queryWithTakeSkip = EF.CompileAsyncQuery((ApplicationDbContext context, int take, int skip)
-            => context.Set<TEntity>()
-            .AsNoTracking()
-            .OrderBy(x => x.Id)
-            .Take(take)
-            .Skip(skip));
-
-        return await queryWithTakeSkip(_applicationDbContext, takeCount, skip).ToListAsync();
+        return Task.FromResult(query);
     }
 
     public async Task<TEntity?> GetByIdAsync(TKey id)
-    {
-        var query = EF.CompileAsyncQuery((ApplicationDbContext context, TKey id)
-            => context.Set<TEntity>()
-            .AsNoTracking()
-            .SingleOrDefault(x => x.Id!.Equals(id)));
-
-        return await query(_applicationDbContext, id);
-    }
+        => await _applicationDbContext.Set<TEntity>()
+            .FindAsync(id);
 }
