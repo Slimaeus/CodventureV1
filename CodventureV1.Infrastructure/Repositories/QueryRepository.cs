@@ -1,4 +1,5 @@
 using CodventureV1.Domain.Common.Interfaces;
+using CodventureV1.Infrastructure.Repositories.Extensions;
 using CodventureV1.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,18 +14,17 @@ public class QueryRepository<TKey, TEntity> : IQueryRepository<TKey, TEntity> wh
 
     public Task<IQueryable<TEntity>> GetAsync(ISpecification specification)
     {
-        var query = _applicationDbContext.Set<TEntity>()
+        var query = _applicationDbContext
+            .Set<TEntity>()
             .OrderBy(x => x.Id)
             .AsSplitQuery();
 
-        if (specification is not null && specification.PageSize > 0)
+        if (specification is null)
         {
-            var takeCount = specification.PageSize;
-            var skip = (specification.PageIndex - 1) * specification.PageSize;
-            query = query
-                .Take(takeCount)
-                .Skip(skip);
+            return Task.FromResult(query);
         }
+
+        query = query.Page(specification);
 
         return Task.FromResult(query);
     }

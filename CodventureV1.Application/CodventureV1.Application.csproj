@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CodventureV1.Domain\CodventureV1.Domain.csproj" />
+    <ProjectReference Include="..\CodventureV1.Infrastructure\CodventureV1.Infrastructure.csproj" />
     <ProjectReference Include="..\CodventureV1.Persistence\CodventureV1.Persistence.csproj" />
   </ItemGroup>
 
