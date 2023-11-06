@@ -39,6 +39,13 @@ public abstract class EntityModule<TKey, TEntity, TDto> : ICarterModule
     protected void MapPost<TCommand>()
         where TCommand : class, ICommand<TKey>
     {
-        Group.MapEntityPost<TCommand, TKey>();
+        Group.MapEntityPost<TKey, TCommand>();
+    }
+
+    protected void MapPostWithEntity<TCommand, TQuery>()
+        where TCommand : class, ICommand<TKey>
+        where TQuery : class, IQuery<TDto>
+    {
+        Group.MapEntityPostWithEntity<TKey, TCommand, TQuery, TDto>();
     }
 }

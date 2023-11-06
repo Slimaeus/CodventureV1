@@ -15,6 +15,6 @@ public sealed class SkillModule : EntityModule<int, Skill, SkillDto>
 
         MapGetWithPagination<GetSkillsQuery>();
         MapGetById<GetSkillQuery>();
-        MapPost<CreateSkillCommand>();
+        MapPostWithEntity<CreateSkillCommand, GetSkillQuery>();
     }
 }

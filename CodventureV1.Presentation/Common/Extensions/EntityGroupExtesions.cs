@@ -34,10 +34,18 @@ public static class EntityGroupExtesions
         return group;
     }
 
-    public static RouteGroupBuilder MapEntityPost<TCommand, TKey>(this RouteGroupBuilder group)
+    public static RouteGroupBuilder MapEntityPost<TKey, TCommand>(this RouteGroupBuilder group)
         where TCommand : class, ICommand<TKey>
     {
-        group.MapPost(PostRoute, Post<TCommand, TKey>);
+        group.MapPost(PostRoute, Post<TKey, TCommand>);
+        return group;
+    }
+
+    public static RouteGroupBuilder MapEntityPostWithEntity<TKey, TCommand, TQuery, TDto>(this RouteGroupBuilder group)
+        where TCommand : class, ICommand<TKey>
+        where TQuery : class, IQuery<TDto>
+    {
+        group.MapPost(PostRoute, PostWithEntity<TKey, TCommand, TQuery, TDto>);
         return group;
     }
 
@@ -68,7 +76,24 @@ public static class EntityGroupExtesions
     private static async Task<Results<
         Ok<IResult<TKey>>,
         BadRequest<ProblemDetails>>>
-        Post<TCommand, TKey>(ISender sender, [FromBody] TCommand request)
+        Post<TKey, TCommand>(ISender sender, [FromBody] TCommand request)
         where TCommand : class, ICommand<TKey>
         => ResultHandlers.HandlePostResult(await sender.Send(request));
+
+    private static async Task<Results<
+        Ok<IResult<TDto>>,
+        BadRequest<ProblemDetails>>>
+        PostWithEntity<TKey, TCommand, TQuery, TDto>(ISender sender, [FromBody] TCommand request)
+        where TCommand : class, ICommand<TKey>
+        where TQuery : class, IQuery<TDto>
+    {
+        var result = await sender.Send(request);
+        if (!result.IsSuccess)
+        {
+            throw new InvalidOperationException("Cannot create query instance");
+        }
+        var query = Activator.CreateInstance(typeof(TQuery), result.Value) as TQuery
+            ?? throw new InvalidOperationException("Cannot create query instance");
+        return ResultHandlers.HandlePostResult(await sender.Send(query));
+    }
 }
