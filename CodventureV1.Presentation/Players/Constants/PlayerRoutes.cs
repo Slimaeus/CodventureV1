@@ -8,5 +8,5 @@ public static class PlayerRoutes
     public const string Tag = nameof(Player);
 
     public const string Get = "";
-    public const string GetById = "/{id:guid}";
+    public const string GetById = "{id:guid}";
 }
