@@ -14,7 +14,7 @@ public static class QueryableExtensions
 
         return source.Where(predicate);
     }
-    public static IQueryable<T> Page<T>(this IQueryable<T> source, ISpecification specification) where T : class
+    public static IQueryable<T> Page<T>(this IQueryable<T> source, ISpecification<T> specification) where T : class
     {
         if (!(specification?.PageSize > 0))
         {

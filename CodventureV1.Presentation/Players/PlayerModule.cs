@@ -1,8 +1,8 @@
 ﻿using Carter;
+using CodventureV1.Application.Common.Models;
 using CodventureV1.Application.Players.Dtos;
 using CodventureV1.Application.Players.Queries.GetPlayer;
 using CodventureV1.Application.Players.Queries.GetPlayers;
-using CodventureV1.Domain.Common.Classes;
 using CodventureV1.Domain.Results.Interfaces;
 using CodventureV1.Infrastructure.Repositories.Collections;
 using CodventureV1.Presentation.Common.Handlers;
@@ -27,8 +27,8 @@ public sealed class PlayerModule : ICarterModule
     private static async Task<Results<
         Ok<IResult<IPagedList<PlayerDto>>>,
         BadRequest<ProblemDetails>>>
-        Get(ISender sender, [AsParameters] Specification specification)
-        => ResultHandlers.HandleGetResult(await sender.Send(new GetPlayersQuery(specification)));
+        Get(ISender sender, [AsParameters] PaginationParams @params)
+        => ResultHandlers.HandleGetResult(await sender.Send(new GetPlayersQuery(@params)));
 
     private static async Task<Results<
         Ok<IResult<PlayerDto>>,

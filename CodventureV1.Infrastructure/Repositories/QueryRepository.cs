@@ -12,7 +12,7 @@ public class QueryRepository<TKey, TEntity> : IQueryRepository<TKey, TEntity> wh
     public QueryRepository(ApplicationDbContext applicationDbContext)
         => _applicationDbContext = applicationDbContext;
 
-    public Task<IQueryable<TEntity>> GetAsync(ISpecification specification)
+    public Task<IQueryable<TEntity>> GetAsync(ISpecification<TEntity> specification)
     {
         var query = _applicationDbContext
             .Set<TEntity>()
@@ -23,6 +23,8 @@ public class QueryRepository<TKey, TEntity> : IQueryRepository<TKey, TEntity> wh
         {
             return Task.FromResult(query);
         }
+
+        query = query.Filter(specification.Predicate);
 
         query = query.Page(specification);
 

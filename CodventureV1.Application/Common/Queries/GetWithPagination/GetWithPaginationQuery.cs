@@ -1,5 +1,7 @@
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using CodventureV1.Application.Common.Models;
+using CodventureV1.Domain.Common.Classes;
 using CodventureV1.Domain.Common.Interfaces;
 using CodventureV1.Domain.Results.Classes;
 using CodventureV1.Domain.Results.Interfaces;
@@ -8,7 +10,7 @@ using CodventureV1.Infrastructure.Repositories.Extensions;
 
 namespace CodventureV1.Application.Common.Queries.GetWithPagination;
 
-public abstract record GetWithPaginationQuery<TItem>(ISpecification Specification) : IQuery<IPagedList<TItem>>
+public abstract record GetWithPaginationQuery<TItem>(IPaginationParams Params) : IQuery<IPagedList<TItem>>
     where TItem : class;
 
 public abstract class GetWithPaginationHandler<TKey, TEntity, TQuery, TItem> : IQueryHandler<TQuery, IPagedList<TItem>>
@@ -27,10 +29,11 @@ public abstract class GetWithPaginationHandler<TKey, TEntity, TQuery, TItem> : I
 
     public async Task<IResult<IPagedList<TItem>>> Handle(TQuery request, CancellationToken cancellationToken)
     {
-        var players = await _repository.GetAsync(request.Specification);
+        var specification = _mapper.Map<Specification<TEntity>>(request.Params);
+        var players = await _repository.GetAsync(specification);
         var playerDtos = players
             .ProjectTo<TItem>(_mapper.ConfigurationProvider)
-            .ToPagedList(request.Specification.PageIndex, request.Specification.PageSize, players.Count());
+            .ToPagedList(specification.PageIndex, specification.PageSize, players.Count());
         return Result.Ok(playerDtos);
     }
 }
