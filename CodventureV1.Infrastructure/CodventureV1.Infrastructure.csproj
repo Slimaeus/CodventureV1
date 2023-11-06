@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="UnitOfWork\" />
     <Folder Include="Services\" />
   </ItemGroup>
 

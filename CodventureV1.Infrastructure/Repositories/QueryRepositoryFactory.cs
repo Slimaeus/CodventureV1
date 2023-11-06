@@ -1,5 +1,6 @@
 using CodventureV1.Domain.Common.Interfaces;
 using CodventureV1.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace CodventureV1.Infrastructure.Repositories;
 
@@ -14,12 +15,13 @@ public sealed class QueryRepositoryFactory : IQueryRepositoryFactory
     {
         var repositoryType = typeof(QueryRepository<,>).MakeGenericType(typeof(TKey), typeof(TEntity));
 
-        var constructor = repositoryType.GetConstructor(new[] { typeof(ApplicationDbContext) });
+        var constructor = repositoryType.GetConstructor(new[] { typeof(DbContext) });
 
         if (constructor is { })
         {
             return (IQueryRepository<TKey, TEntity>)constructor.Invoke(new object[] { _applicationDbContext });
         }
+
         throw new InvalidOperationException($"No suitable constructor found for {repositoryType.Name}.");
     }
 }
