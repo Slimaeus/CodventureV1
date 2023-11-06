@@ -9,10 +9,8 @@ namespace CodventureV1.Presentation.Skills;
 
 public sealed class SkillModule : EntityModule<int, Skill, SkillDto>
 {
-    public override void AddRoutes(IEndpointRouteBuilder app)
+    protected override void MapEndpoints()
     {
-        base.AddRoutes(app);
-
         MapGetWithPagination<GetSkillsQuery>();
         MapGetById<GetSkillQuery>();
         MapPostWithEntity<CreateSkillCommand, GetSkillQuery>();

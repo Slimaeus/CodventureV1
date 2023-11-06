@@ -22,7 +22,11 @@ public abstract class EntityModule<TKey, TEntity, TDto> : ICarterModule
 
         Group = apiGroup.MapGroup($"{entityName.Pluralize()}")
             .WithTags(entityName);
+
+        MapEndpoints();
     }
+
+    protected abstract void MapEndpoints();
 
     protected void MapGetWithPagination<TQuery>()
         where TQuery : class, IQuery<IPagedList<TDto>>

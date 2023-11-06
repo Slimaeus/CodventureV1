@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CodventureV1.Persistence.Configurations;
 
-public sealed class SkillConfiguration : IEntityTypeConfiguration<Skill>
+public sealed class SkillTypeConfiguration : IEntityTypeConfiguration<SkillType>
 {
-    public void Configure(EntityTypeBuilder<Skill> builder)
+    public void Configure(EntityTypeBuilder<SkillType> builder)
     {
         builder
-            .Property(x => x.Id)
-            .ValueGeneratedOnAdd();
+           .Property(x => x.Id)
+           .ValueGeneratedOnAdd();
 
         builder
             .HasIndex(x => x.Code)

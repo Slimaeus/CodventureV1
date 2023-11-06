@@ -3,10 +3,10 @@ using CodventureV1.Application.Common.Commands.Create;
 using CodventureV1.Domain.Skills;
 using CodventureV1.Infrastructure.UnitOfWorks;
 
-namespace CodventureV1.Application.Skills.Commands.CreateSkill;
+namespace CodventureV1.Application.Skills.Commands.CreateSkillType;
 
-public sealed record CreateSkillCommand(string Name, string Code, int SkillTypeId) : CreateCommand<int>;
-public sealed class Handler : CreateCommandHandler<CreateSkillCommand, Skill, int>
+public sealed record CreateSkillTypeCommand(string Name, string Code) : CreateCommand<int>;
+public sealed class Handler : CreateCommandHandler<CreateSkillTypeCommand, SkillType, int>
 {
     public Handler(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
     {

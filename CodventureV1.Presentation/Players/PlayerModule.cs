@@ -8,14 +8,12 @@ namespace CodventureV1.Presentation.Players;
 
 public sealed class PlayerModule : EntityModule<Guid, Player, PlayerDto>
 {
-    public override void AddRoutes(IEndpointRouteBuilder app)
+    public PlayerModule()
     {
-        // Setup
-        Version = 2;
-
-        // Map
-        base.AddRoutes(app);
-
+        Version = 1;
+    }
+    protected override void MapEndpoints()
+    {
         MapGetWithPagination<GetPlayersQuery>();
         MapGetById<GetPlayerQuery>();
     }
