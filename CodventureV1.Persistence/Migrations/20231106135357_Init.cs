@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -50,6 +49,20 @@ namespace CodventureV1.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SkillTypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    Code = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SkillTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -158,6 +171,52 @@ namespace CodventureV1.Persistence.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Skills",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    Code = table.Column<string>(type: "TEXT", nullable: false),
+                    SkillTypeId = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Skills", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Skills_SkillTypes_SkillTypeId",
+                        column: x => x.SkillTypeId,
+                        principalTable: "SkillTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PlayerSkill",
+                columns: table => new
+                {
+                    PlayerId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    SkillId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Proficiency = table.Column<int>(type: "INTEGER", nullable: false, defaultValue: 1)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PlayerSkill", x => new { x.PlayerId, x.SkillId });
+                    table.ForeignKey(
+                        name: "FK_PlayerSkill_AspNetUsers_PlayerId",
+                        column: x => x.PlayerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PlayerSkill_Skills_SkillId",
+                        column: x => x.SkillId,
+                        principalTable: "Skills",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -194,6 +253,22 @@ namespace CodventureV1.Persistence.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PlayerSkill_SkillId",
+                table: "PlayerSkill",
+                column: "SkillId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Skills_SkillTypeId",
+                table: "Skills",
+                column: "SkillTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SkillTypes_Code",
+                table: "SkillTypes",
+                column: "Code",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -215,10 +290,19 @@ namespace CodventureV1.Persistence.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "PlayerSkill");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Skills");
+
+            migrationBuilder.DropTable(
+                name: "SkillTypes");
         }
     }
 }

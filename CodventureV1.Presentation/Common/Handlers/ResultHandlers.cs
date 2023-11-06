@@ -31,6 +31,15 @@ public static class ResultHandlers
             StatusCodes.Status400BadRequest => TypedResults.BadRequest(result.ToProblemDetails()),
             _ => throw new Exception()
         };
+    public static Results<NoContent, NotFound<ProblemDetails>, BadRequest<ProblemDetails>> HandlePutResult<TResult>(TResult result)
+        where TResult : IResultBase
+        => result.StatusCode switch
+        {
+            StatusCodes.Status200OK => TypedResults.NoContent(),
+            StatusCodes.Status400BadRequest => TypedResults.BadRequest(result.ToProblemDetails()),
+            StatusCodes.Status404NotFound => TypedResults.NotFound(result.ToProblemDetails()),
+            _ => throw new Exception()
+        };
     public static ProblemDetails ToProblemDetails(this IResultBase result)
         => result.StatusCode switch
         {

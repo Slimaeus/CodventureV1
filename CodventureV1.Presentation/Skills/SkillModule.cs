@@ -1,4 +1,5 @@
 ﻿using CodventureV1.Application.Skills.Commands.CreateSkill;
+using CodventureV1.Application.Skills.Commands.UpdateSkill;
 using CodventureV1.Application.Skills.Dtos;
 using CodventureV1.Application.Skills.Queries.GetSkill;
 using CodventureV1.Application.Skills.Queries.GetSkills;
@@ -14,5 +15,6 @@ public sealed class SkillModule : EntityModule<int, Skill, SkillDto>
         MapGetWithPagination<GetSkillsQuery>();
         MapGetById<GetSkillQuery>();
         MapPostWithEntity<CreateSkillCommand, GetSkillQuery>();
+        MapPut<UpdateSkillCommand>();
     }
 }

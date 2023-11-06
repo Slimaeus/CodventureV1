@@ -13,10 +13,6 @@ public sealed class SkillConfiguration : IEntityTypeConfiguration<Skill>
             .ValueGeneratedOnAdd();
 
         builder
-            .HasIndex(x => x.Code)
-            .IsUnique();
-
-        builder
             .Property(x => x.Name)
             .HasMaxLength(SkillConstants.NameMaxLength);
     }

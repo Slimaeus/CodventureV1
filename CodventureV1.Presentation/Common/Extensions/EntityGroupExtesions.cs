@@ -1,4 +1,5 @@
 ﻿using CodventureV1.Application.Common.Commands;
+using CodventureV1.Application.Common.Commands.Update;
 using CodventureV1.Application.Common.Models;
 using CodventureV1.Application.Common.Queries;
 using CodventureV1.Domain.Results.Interfaces;
@@ -15,7 +16,7 @@ public static class EntityGroupExtesions
     private const string GetRoute = "";
     private const string GetByIdRoute = "{id}";
     private const string PostRoute = "";
-    private const string UpdateRoute = "";
+    private const string PutRoute = "{id}";
     private const string DeleteByIdRoute = "{id}";
     private const string DeleteRange = "";
     public static RouteGroupBuilder MapEntityGet<TQuery, TDto>(this RouteGroupBuilder group)
@@ -46,6 +47,12 @@ public static class EntityGroupExtesions
         where TQuery : class, IQuery<TDto>
     {
         group.MapPost(PostRoute, PostWithEntity<TKey, TCommand, TQuery, TDto>);
+        return group;
+    }
+    public static RouteGroupBuilder MapEntityPut<TKey, TCommand>(this RouteGroupBuilder group)
+        where TCommand : UpdateCommand<TKey>
+    {
+        group.MapPut(PutRoute, Put<TKey, TCommand>);
         return group;
     }
 
@@ -95,5 +102,34 @@ public static class EntityGroupExtesions
         var query = Activator.CreateInstance(typeof(TQuery), result.Value) as TQuery
             ?? throw new InvalidOperationException("Cannot create query instance");
         return ResultHandlers.HandlePostResult(await sender.Send(query));
+    }
+
+    private static async Task<Results<
+        NoContent,
+        NotFound<ProblemDetails>,
+        BadRequest<ProblemDetails>
+        >>
+        Put<TKey, TCommand>(ISender sender, TKey id, [FromBody] TCommand request)
+        where TCommand : UpdateCommand<TKey>
+    {
+        if (id is null || request.Id is null)
+        {
+            var problemDetails = new ProblemDetails
+            {
+                Status = StatusCodes.Status404NotFound,
+                Title = "Please provide the Id"
+            };
+            return TypedResults.BadRequest(problemDetails);
+        }
+        if (!id.Equals(request.Id))
+        {
+            var problemDetails = new ProblemDetails
+            {
+                Status = StatusCodes.Status400BadRequest,
+                Title = "Ids not match"
+            };
+            return TypedResults.BadRequest(problemDetails);
+        }
+        return ResultHandlers.HandlePutResult(await sender.Send(request));
     }
 }

@@ -159,9 +159,6 @@ namespace CodventureV1.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Code")
-                        .IsUnique();
-
                     b.HasIndex("SkillTypeId");
 
                     b.ToTable("Skills");

@@ -1,5 +1,6 @@
 ﻿using Carter;
 using CodventureV1.Application.Common.Commands;
+using CodventureV1.Application.Common.Commands.Update;
 using CodventureV1.Application.Common.Queries;
 using CodventureV1.Domain.Common.Extensions;
 using CodventureV1.Infrastructure.Repositories.Queries.Collections;
@@ -51,5 +52,11 @@ public abstract class EntityModule<TKey, TEntity, TDto> : ICarterModule
         where TQuery : class, IQuery<TDto>
     {
         Group.MapEntityPostWithEntity<TKey, TCommand, TQuery, TDto>();
+    }
+
+    protected void MapPut<TCommand>()
+        where TCommand : UpdateCommand<TKey>
+    {
+        Group.MapEntityPut<TKey, TCommand>();
     }
 }

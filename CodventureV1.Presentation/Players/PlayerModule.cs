@@ -9,9 +9,7 @@ namespace CodventureV1.Presentation.Players;
 public sealed class PlayerModule : EntityModule<Guid, Player, PlayerDto>
 {
     public PlayerModule()
-    {
-        Version = 1;
-    }
+        => Version = 1;
     protected override void MapEndpoints()
     {
         MapGetWithPagination<GetPlayersQuery>();

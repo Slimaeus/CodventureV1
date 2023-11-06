@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CodventureV1.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231029170848_AddSkill")]
-    partial class AddSkill
+    [Migration("20231106135357_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -130,6 +130,11 @@ namespace CodventureV1.Persistence.Migrations
                     b.Property<int>("SkillId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("Proficiency")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(1);
+
                     b.HasKey("PlayerId", "SkillId");
 
                     b.HasIndex("SkillId");
@@ -143,6 +148,35 @@ namespace CodventureV1.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("SkillTypeId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SkillTypeId");
+
+                    b.ToTable("Skills");
+                });
+
+            modelBuilder.Entity("CodventureV1.Domain.Skills.SkillType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -150,7 +184,10 @@ namespace CodventureV1.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Skills");
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.ToTable("SkillTypes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -271,6 +308,17 @@ namespace CodventureV1.Persistence.Migrations
                     b.Navigation("Skill");
                 });
 
+            modelBuilder.Entity("CodventureV1.Domain.Skills.Skill", b =>
+                {
+                    b.HasOne("CodventureV1.Domain.Skills.SkillType", "Type")
+                        .WithMany("Skills")
+                        .HasForeignKey("SkillTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Type");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("CodventureV1.Domain.Roles.PlayerRole", null)
@@ -330,6 +378,11 @@ namespace CodventureV1.Persistence.Migrations
             modelBuilder.Entity("CodventureV1.Domain.Skills.Skill", b =>
                 {
                     b.Navigation("PlayerSkills");
+                });
+
+            modelBuilder.Entity("CodventureV1.Domain.Skills.SkillType", b =>
+                {
+                    b.Navigation("Skills");
                 });
 #pragma warning restore 612, 618
         }
