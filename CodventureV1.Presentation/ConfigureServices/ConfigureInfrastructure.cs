@@ -4,6 +4,7 @@ using CodventureV1.Domain.Roles;
 using CodventureV1.Infrastructure.Players;
 using CodventureV1.Infrastructure.Repositories.Commands;
 using CodventureV1.Infrastructure.Repositories.Queries;
+using CodventureV1.Infrastructure.UnitOfWorks;
 using CodventureV1.Persistence;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
@@ -39,6 +40,7 @@ public static class ConfigureInfrastructure
         services.AddScoped<IPlayerQueryRepository, PlayerQueryRepository>();
         services.AddScoped<IQueryRepositoryFactory, QueryRepositoryFactory>();
         services.AddScoped<ICommandRepositoryFactory, CommandRepositoryFactory>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         return services;
     }

@@ -1,4 +1,3 @@
-using CodventureV1.Domain.Common.Interfaces;
 using CodventureV1.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,9 +10,9 @@ public sealed class CommandRepositoryFactory : ICommandRepositoryFactory
     public CommandRepositoryFactory(ApplicationDbContext applicationDbContext)
         => _applicationDbContext = applicationDbContext;
 
-    public ICommandRepository<TEntity> CreateCommandRepository<TKey, TEntity>() where TEntity : class, IEntity<TKey>
+    public ICommandRepository<TEntity> CreateCommandRepository<TEntity>() where TEntity : class
     {
-        var repositoryType = typeof(CommandRepository<,>).MakeGenericType(typeof(TKey), typeof(TEntity));
+        var repositoryType = typeof(CommandRepository<>).MakeGenericType(typeof(TEntity));
 
         var constructor = repositoryType.GetConstructor(new[] { typeof(DbContext) });
 

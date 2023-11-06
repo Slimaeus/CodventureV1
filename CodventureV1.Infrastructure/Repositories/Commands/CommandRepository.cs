@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace CodventureV1.Infrastructure.Repositories.Commands;
 
-public class CommandRepository<TKey, TEntity> : ICommandRepository<TEntity> where TEntity : class
+public class CommandRepository<TEntity> : ICommandRepository<TEntity> where TEntity : class
 {
     private readonly DbContext _dbContext;
     private readonly DbSet<TEntity> _dbSet;
