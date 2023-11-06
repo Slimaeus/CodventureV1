@@ -1,8 +1,8 @@
-namespace CodventureV1.Infrastructure.Repositories.Extensions;
+namespace CodventureV1.Infrastructure.Repositories.Queries.Extensions;
 
 public static class TaskExtensions
 {
-    public static Task<TResult> Then<TSource, TResult>(this Task<TSource> sourceTask, Func<TSource, TResult> selector, CancellationToken cancellationToken = default(CancellationToken))
+    public static Task<TResult> Then<TSource, TResult>(this Task<TSource> sourceTask, Func<TSource, TResult> selector, CancellationToken cancellationToken = default)
     {
         TaskCompletionSource<TResult> taskCompletionSource = new TaskCompletionSource<TResult>();
         sourceTask.ContinueWith(delegate (Task<TSource> task)

@@ -4,6 +4,10 @@ namespace CodventureV1.Domain.Skills;
 
 public class SkillType : BaseEntity<int>
 {
+    public SkillType()
+    {
+
+    }
     public SkillType(string name, string code)
     {
         Name = name;

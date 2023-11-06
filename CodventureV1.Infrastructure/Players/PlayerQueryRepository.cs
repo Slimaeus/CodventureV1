@@ -1,5 +1,5 @@
 using CodventureV1.Domain.Players;
-using CodventureV1.Infrastructure.Repositories;
+using CodventureV1.Infrastructure.Repositories.Queries;
 using CodventureV1.Persistence;
 
 namespace CodventureV1.Infrastructure.Players;

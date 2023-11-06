@@ -5,8 +5,8 @@ using CodventureV1.Domain.Common.Classes;
 using CodventureV1.Domain.Common.Interfaces;
 using CodventureV1.Domain.Results.Classes;
 using CodventureV1.Domain.Results.Interfaces;
-using CodventureV1.Infrastructure.Repositories.Collections;
-using CodventureV1.Infrastructure.Repositories.Extensions;
+using CodventureV1.Infrastructure.Repositories.Queries.Collections;
+using CodventureV1.Infrastructure.Repositories.Queries.Extensions;
 
 namespace CodventureV1.Application.Common.Queries.GetWithPagination;
 

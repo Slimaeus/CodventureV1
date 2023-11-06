@@ -23,6 +23,14 @@ public static class ResultHandlers
             StatusCodes.Status400BadRequest => TypedResults.BadRequest(result.ToProblemDetails()),
             _ => throw new Exception()
         };
+    public static Results<Ok<TResult>, BadRequest<ProblemDetails>> HandlePostResult<TResult>(TResult result)
+        where TResult : IResultBase
+        => result.StatusCode switch
+        {
+            StatusCodes.Status200OK => TypedResults.Ok(result),
+            StatusCodes.Status400BadRequest => TypedResults.BadRequest(result.ToProblemDetails()),
+            _ => throw new Exception()
+        };
     public static ProblemDetails ToProblemDetails(this IResultBase result)
         => result.StatusCode switch
         {

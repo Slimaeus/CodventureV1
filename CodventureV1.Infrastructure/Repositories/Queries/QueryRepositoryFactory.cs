@@ -2,7 +2,7 @@ using CodventureV1.Domain.Common.Interfaces;
 using CodventureV1.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace CodventureV1.Infrastructure.Repositories;
+namespace CodventureV1.Infrastructure.Repositories.Queries;
 
 public sealed class QueryRepositoryFactory : IQueryRepositoryFactory
 {

@@ -1,7 +1,7 @@
 using CodventureV1.Domain.Common.Interfaces;
 using System.Linq.Expressions;
 
-namespace CodventureV1.Infrastructure.Repositories.Extensions;
+namespace CodventureV1.Infrastructure.Repositories.Queries.Extensions;
 
 public static class QueryableExtensions
 {

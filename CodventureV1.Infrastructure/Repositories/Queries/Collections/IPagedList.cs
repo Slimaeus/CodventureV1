@@ -1,4 +1,4 @@
-namespace CodventureV1.Infrastructure.Repositories.Collections;
+namespace CodventureV1.Infrastructure.Repositories.Queries.Collections;
 
 public interface IPagedList<T>
 {

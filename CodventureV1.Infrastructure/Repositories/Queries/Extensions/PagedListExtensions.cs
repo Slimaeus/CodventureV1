@@ -1,6 +1,6 @@
-using CodventureV1.Infrastructure.Repositories.Collections;
+using CodventureV1.Infrastructure.Repositories.Queries.Collections;
 
-namespace CodventureV1.Infrastructure.Repositories.Extensions;
+namespace CodventureV1.Infrastructure.Repositories.Queries.Extensions;
 
 public static class PagedListExtensions
 {

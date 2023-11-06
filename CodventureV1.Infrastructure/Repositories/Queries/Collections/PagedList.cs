@@ -1,4 +1,4 @@
-namespace CodventureV1.Infrastructure.Repositories.Collections;
+namespace CodventureV1.Infrastructure.Repositories.Queries.Collections;
 
 public class PagedList<T> : IPagedList<T>
 {
@@ -22,7 +22,7 @@ public class PagedList<T> : IPagedList<T>
             PageSize = pageSize;
             Count = source.Count;
             TotalCount = totalCount;
-            TotalPages = PageSize > 0 ? (int)Math.Ceiling((decimal)TotalCount / (decimal)PageSize.Value) : 0;
+            TotalPages = PageSize > 0 ? (int)Math.Ceiling(TotalCount / (decimal)PageSize.Value) : 0;
             Items = source;
         }
     }
@@ -35,7 +35,7 @@ public class PagedList<T> : IPagedList<T>
             PageSize = pageSize;
             Count = source.Count();
             TotalCount = totalCount;
-            TotalPages = PageSize > 0 ? (int)Math.Ceiling((decimal)TotalCount / (decimal)PageSize.Value) : 0;
+            TotalPages = PageSize > 0 ? (int)Math.Ceiling(TotalCount / (decimal)PageSize.Value) : 0;
             Items = source.ToList();
         }
     }
