@@ -6,9 +6,6 @@ using CodventureV1.Infrastructure.UnitOfWorks;
 namespace CodventureV1.Application.Skills.Commands.CreateSkillType;
 
 public sealed record CreateSkillTypeCommand(string Name, string Code) : CreateCommand<int>;
-public sealed class Handler : CreateCommandHandler<CreateSkillTypeCommand, SkillType, int>
+public sealed class Handler(IUnitOfWork unitOfWork, IMapper mapper) : CreateCommandHandler<CreateSkillTypeCommand, SkillType, int>(unitOfWork, mapper)
 {
-    public Handler(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
-    {
-    }
 }

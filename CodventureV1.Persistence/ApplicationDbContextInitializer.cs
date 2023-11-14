@@ -7,21 +7,14 @@ using Serilog;
 namespace CodventureV1.Persistence;
 
 public sealed class ApplicationDbContextInitializer
+    (ApplicationDbContext applicationDbContext, UserManager<Player> userManager)
 {
-    private readonly ApplicationDbContext _applicationDbContext;
-    private readonly UserManager<Player> _userManager;
-
-    public ApplicationDbContextInitializer(ApplicationDbContext applicationDbContext, UserManager<Player> userManager)
-    {
-        _applicationDbContext = applicationDbContext;
-        _userManager = userManager;
-    }
 
     public async Task InitialiseAsync()
     {
         try
         {
-            await _applicationDbContext.Database.MigrateAsync();
+            await applicationDbContext.Database.MigrateAsync();
         }
         catch (Exception ex)
         {
@@ -43,13 +36,13 @@ public sealed class ApplicationDbContextInitializer
 
     public async Task TrySeedAsync()
     {
-        if (await _userManager.Users.AnyAsync()
-            || await _applicationDbContext.Skills.AnyAsync())
+        if (await userManager.Users.AnyAsync()
+            || await applicationDbContext.Skills.AnyAsync())
             return;
 
         var thai = new Player("thai", "thai@gmail.com");
 
-        await _userManager.CreateAsync(thai, PlayerConstants.DefaultPassword);
+        await userManager.CreateAsync(thai, PlayerConstants.DefaultPassword);
 
         var programmingLanguageSkillType = new SkillType("Programming Language", "PL");
         var cloudProviderSkillType = new SkillType("Cloud Provider", "CP");
@@ -57,7 +50,7 @@ public sealed class ApplicationDbContextInitializer
         var projectManagementSkillType = new SkillType("Project Management", "PM");
         var databaseSkillType = new SkillType("Database", "DB");
 
-        await _applicationDbContext
+        await applicationDbContext
             .AddRangeAsync(
             programmingLanguageSkillType,
             cloudProviderSkillType,
@@ -83,7 +76,7 @@ public sealed class ApplicationDbContextInitializer
         var jira = new Skill("Jira", "002") { Type = projectManagementSkillType };
 
 
-        await _applicationDbContext
+        await applicationDbContext
             .AddRangeAsync(
             cSharpSkill, typeScriptSkill, dartSkill,
             awsSkill, azureSkill,
@@ -94,7 +87,7 @@ public sealed class ApplicationDbContextInitializer
         thai.PlayerSkills
             .Add(new PlayerSkill { Skill = cSharpSkill });
 
-        await _applicationDbContext
+        await applicationDbContext
             .SaveChangesAsync()
             .ConfigureAwait(false);
     }

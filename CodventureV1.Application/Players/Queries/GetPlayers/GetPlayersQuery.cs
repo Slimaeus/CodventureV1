@@ -24,9 +24,7 @@ namespace CodventureV1.Application.Players.Queries.GetPlayers;
 
 public sealed record GetPlayersQuery(IPaginationParams Params) : GetWithPaginationQuery<PlayerDto>(Params);
 
-public sealed class Handler : GetWithPaginationHandler<Guid, Player, GetPlayersQuery, PlayerDto>
+public sealed class Handler(IQueryRepositoryFactory queryRepositoryFactory, IMapper mapper)
+    : GetWithPaginationHandler<Guid, Player, GetPlayersQuery, PlayerDto>(queryRepositoryFactory, mapper)
 {
-    public Handler(IQueryRepositoryFactory queryRepositoryFactory, IMapper mapper) : base(queryRepositoryFactory, mapper)
-    {
-    }
 }

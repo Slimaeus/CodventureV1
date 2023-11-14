@@ -9,20 +9,12 @@ using Microsoft.AspNetCore.Http;
 namespace CodventureV1.Application.Common.Commands.Update;
 
 public abstract record UpdateCommand<TKey>(TKey Id) : ICommand<Unit>;
-public abstract class UpdateCommandHandler<TKey, TCommand, TEntity> : ICommandHandler<TCommand, Unit>
+public abstract class UpdateCommandHandler<TKey, TCommand, TEntity>(IUnitOfWork unitOfWork, IQueryRepositoryFactory queryRepositoryFactory, IMapper mapper) : ICommandHandler<TCommand, Unit>
     where TCommand : UpdateCommand<TKey>
     where TEntity : class, IEntity<TKey>
 {
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IQueryRepository<TKey, TEntity> _queryRepository;
-    private readonly IMapper _mapper;
+    private readonly IQueryRepository<TKey, TEntity> _queryRepository = queryRepositoryFactory.CreateQueryRepository<TKey, TEntity>();
 
-    public UpdateCommandHandler(IUnitOfWork unitOfWork, IQueryRepositoryFactory queryRepositoryFactory, IMapper mapper)
-    {
-        _unitOfWork = unitOfWork;
-        _queryRepository = queryRepositoryFactory.CreateQueryRepository<TKey, TEntity>();
-        _mapper = mapper;
-    }
     public async Task<IResult<Unit>> Handle(TCommand request, CancellationToken cancellationToken)
     {
         var entity = await _queryRepository.GetByIdAsync(request.Id);
@@ -32,9 +24,9 @@ public abstract class UpdateCommandHandler<TKey, TCommand, TEntity> : ICommandHa
             return Result.Fail<Unit>("Not Found", StatusCodes.Status404NotFound);
         }
 
-        _mapper.Map(request, entity);
+        mapper.Map(request, entity);
 
-        await _unitOfWork.SaveChangesAsync(cancellationToken: cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken: cancellationToken);
 
         return Result.Ok(Unit.Value);
     }

@@ -7,11 +7,9 @@ using Microsoft.EntityFrameworkCore;
 namespace CodventureV1.Persistence;
 
 public sealed class ApplicationDbContext
-    : IdentityDbContext<Player, PlayerRole, Guid>
+    (DbContextOptions<ApplicationDbContext> options)
+    : IdentityDbContext<Player, PlayerRole, Guid>(options)
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-        : base(options) { }
-
     public DbSet<Skill> Skills { get; set; }
     public DbSet<SkillType> SkillTypes { get; set; }
 

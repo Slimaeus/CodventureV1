@@ -7,9 +7,7 @@ using CodventureV1.Infrastructure.UnitOfWorks;
 namespace CodventureV1.Application.Skills.Commands.UpdateSkill;
 
 public sealed record UpdateSkillCommand(int Id, string Name, string Code) : UpdateCommand<int>(Id);
-public sealed class Handler : UpdateCommandHandler<int, UpdateSkillCommand, Skill>
+public sealed class Handler(IUnitOfWork unitOfWork, IQueryRepositoryFactory queryRepositoryFactory, IMapper mapper)
+    : UpdateCommandHandler<int, UpdateSkillCommand, Skill>(unitOfWork, queryRepositoryFactory, mapper)
 {
-    public Handler(IUnitOfWork unitOfWork, IQueryRepositoryFactory queryRepositoryFactory, IMapper mapper) : base(unitOfWork, queryRepositoryFactory, mapper)
-    {
-    }
 }

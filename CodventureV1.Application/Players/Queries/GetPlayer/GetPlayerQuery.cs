@@ -12,18 +12,9 @@ namespace CodventureV1.Application.Players.Queries.GetPlayer;
 
 public sealed record GetPlayerQuery(Guid Id) : IQuery<PlayerDto>;
 
-public sealed class Handler : IQueryHandler<GetPlayerQuery, PlayerDto>
+public sealed class Handler(IQueryRepositoryFactory queryRepositoryFactory, ApplicationDbContext applicationDbContext, IMapper mapper) : IQueryHandler<GetPlayerQuery, PlayerDto>
 {
-    private readonly IQueryRepository<Guid, Player> _repository;
-    private readonly ApplicationDbContext _applicationDbContext;
-    private readonly IMapper _mapper;
-
-    public Handler(IQueryRepositoryFactory queryRepositoryFactory, ApplicationDbContext applicationDbContext, IMapper mapper)
-    {
-        _repository = queryRepositoryFactory.CreateQueryRepository<Guid, Player>();
-        _applicationDbContext = applicationDbContext;
-        _mapper = mapper;
-    }
+    private readonly IQueryRepository<Guid, Player> _repository = queryRepositoryFactory.CreateQueryRepository<Guid, Player>();
 
     public async Task<IResult<PlayerDto>> Handle(GetPlayerQuery request, CancellationToken cancellationToken)
     {
@@ -34,8 +25,8 @@ public sealed class Handler : IQueryHandler<GetPlayerQuery, PlayerDto>
             var error = PlayerErrors.PlayerNotFound;
             return Result.Fail<PlayerDto>(error, StatusCodes.Status404NotFound);
         }
-        _applicationDbContext.Entry(player).Collection(x => x.PlayerSkills).Load();
-        var playerDto = _mapper.Map<PlayerDto>(player);
+        applicationDbContext.Entry(player).Collection(x => x.PlayerSkills).Load();
+        var playerDto = mapper.Map<PlayerDto>(player);
         return Result.Ok(playerDto);
     }
 }

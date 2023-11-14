@@ -8,9 +8,6 @@ using CodventureV1.Domain.Skills;
 namespace CodventureV1.Application.Skills.Queries.GetSkillTypes;
 
 public sealed record GetSkillTypesQuery(IPaginationParams Params) : GetWithPaginationQuery<SkillTypeDto>(Params);
-public sealed class Handler : GetWithPaginationHandler<int, SkillType, GetSkillTypesQuery, SkillTypeDto>
+public sealed class Handler(IQueryRepositoryFactory queryRepositoryFactory, IMapper mapper) : GetWithPaginationHandler<int, SkillType, GetSkillTypesQuery, SkillTypeDto>(queryRepositoryFactory, mapper)
 {
-    public Handler(IQueryRepositoryFactory queryRepositoryFactory, IMapper mapper) : base(queryRepositoryFactory, mapper)
-    {
-    }
 }
