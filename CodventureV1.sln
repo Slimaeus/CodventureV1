@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodventureV1.Domain", "CodventureV1.Domain\CodventureV1.Domain.csproj", "{01BBAE8D-2FCC-4501-8800-B2F2926D1192}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodventureV1.Domain", "CodventureV1.Domain\CodventureV1.Domain.csproj", "{01BBAE8D-2FCC-4501-8800-B2F2926D1192}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodventureV1.Persistence", "CodventureV1.Persistence\CodventureV1.Persistence.csproj", "{2757A295-0371-496A-AA43-BB0CD457AE56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodventureV1.Persistence", "CodventureV1.Persistence\CodventureV1.Persistence.csproj", "{2757A295-0371-496A-AA43-BB0CD457AE56}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodventureV1.Application", "CodventureV1.Application\CodventureV1.Application.csproj", "{D10E450B-4C8A-44B6-A6BB-509C0DD2BFD4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodventureV1.Application", "CodventureV1.Application\CodventureV1.Application.csproj", "{D10E450B-4C8A-44B6-A6BB-509C0DD2BFD4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodventureV1.Infrastructure", "CodventureV1.Infrastructure\CodventureV1.Infrastructure.csproj", "{08987524-0F7B-4FF6-842E-7BE818621882}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodventureV1.Infrastructure", "CodventureV1.Infrastructure\CodventureV1.Infrastructure.csproj", "{08987524-0F7B-4FF6-842E-7BE818621882}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodventureV1.Presentation", "CodventureV1.Presentation\CodventureV1.Presentation.csproj", "{E1A0BB8E-07EE-4BA3-A082-7D1C30437C70}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodventureV1.Presentation", "CodventureV1.Presentation\CodventureV1.Presentation.csproj", "{E1A0BB8E-07EE-4BA3-A082-7D1C30437C70}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodventureV1.Tests", "CodventureV1.Tests\CodventureV1.Tests.csproj", "{E895C8AB-304C-44A3-9946-88F5F5627692}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{E1A0BB8E-07EE-4BA3-A082-7D1C30437C70}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E1A0BB8E-07EE-4BA3-A082-7D1C30437C70}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E1A0BB8E-07EE-4BA3-A082-7D1C30437C70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E895C8AB-304C-44A3-9946-88F5F5627692}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E895C8AB-304C-44A3-9946-88F5F5627692}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E895C8AB-304C-44A3-9946-88F5F5627692}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E895C8AB-304C-44A3-9946-88F5F5627692}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
